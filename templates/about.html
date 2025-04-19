@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="content-section">
+                    <h1 class="text-center mb-4">About 5 Square Feets</h1>
+                    <div class="row mb-5">
+                        <div class="col-md-4 text-center">
+                            <div class="circle-icon mb-3" style="background: var(--primary-gradient)">
+                                <i class="fas fa-home fa-2x text-white"></i>
+                            </div>
+                            <h4>Quality Properties</h4>
+                            <p>We ensure all listed properties meet our high standards.</p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="circle-icon mb-3" style="background: var(--secondary-gradient)">
+                                <i class="fas fa-shield-alt fa-2x text-white"></i>
+                            </div>
+                            <h4>Secure Transactions</h4>
+                            <p>Your security is our top priority in every transaction.</p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="circle-icon mb-3" style="background: var(--accent-gradient)">
+                                <i class="fas fa-headset fa-2x text-white"></i>
+                            </div>
+                            <h4>24/7 Support</h4>
+                            <p>Our team is always here to help you.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mb-5">
+                        <h2>Our Mission</h2>
+                        <p class="lead">To provide the best platform for property buyers and sellers to connect and make their dreams come true.</p>
+                    </div>
+
+                    <div class="row mt-5">
+                        <div class="col-md-6">
+                            <div class="card h-100" style="border: none; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                                <div class="card-body">
+                                    <h3>For Buyers</h3>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-check text-success"></i> Wide range of properties</li>
+                                        <li><i class="fas fa-check text-success"></i> Detailed property information</li>
+                                        <li><i class="fas fa-check text-success"></i> Easy contact with sellers</li>
+                                        <li><i class="fas fa-check text-success"></i> Property alerts</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100" style="border: none; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                                <div class="card-body">
+                                    <h3>For Sellers</h3>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-check text-success"></i> Easy property listing</li>
+                                        <li><i class="fas fa-check text-success"></i> Wide audience reach</li>
+                                        <li><i class="fas fa-check text-success"></i> Property management tools</li>
+                                        <li><i class="fas fa-check text-success"></i> Professional support</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .circle-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            transition: transform 0.3s ease;
+        }
+        .circle-icon:hover {
+            transform: scale(1.1);
+        }
+    </style>
+{% endblock content %} 

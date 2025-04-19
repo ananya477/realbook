@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2>Book {{ property.title }}</h2>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="check_in">Check-in Date:</label>
+                    <input type="date" class="form-control" id="check_in" name="check_in" required>
+                </div>
+                <div class="form-group mt-3">
+                    <label for="check_out">Check-out Date:</label>
+                    <input type="date" class="form-control" id="check_out" name="check_out" required>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Book Now</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+{% load static %}
+{% load form_tags %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="content-section">
+                <!-- Form Header -->
+                <div class="form-header text-center mb-4" style="background: var(--primary-gradient); padding: 2rem; border-radius: 10px; margin: -20px -30px 20px;">
+                    <h2 class="text-white mb-2">
+                        {% if form.instance.pk %}
+                            <i class="fas fa-edit mr-2"></i>Update Property
+                        {% else %}
+                            <i class="fas fa-plus-circle mr-2"></i>New Property
+                        {% endif %}
+                    </h2>
+                    <p class="text-light mb-0">Fill in the details below to {% if form.instance.pk %}update{% else %}list{% endif %} your property</p>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data" class="property-form">
+                    {% csrf_token %}
+                    
+                    <!-- Basic Information -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">
+                                <i class="fas fa-info-circle mr-2"></i>Basic Information
+                            </h4>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="{{ form.title.id_for_label }}">
+                                            <i class="fas fa-heading mr-2"></i>Property Title
+                                        </label>
+                                        {{ form.title|addclass:"form-control" }}
+                                        {% if form.title.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.title.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.property_type.id_for_label }}">
+                                            <i class="fas fa-home mr-2"></i>Property Type
+                                        </label>
+                                        {{ form.property_type|addclass:"form-control" }}
+                                        {% if form.property_type.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.property_type.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ form.status.id_for_label }}">
+                                            <i class="fas fa-tag mr-2"></i>Status
+                                        </label>
+                                        {{ form.status|addclass:"form-control" }}
+                                        {% if form.status.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.status.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Location and Price -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">
+                                <i class="fas fa-map-marked-alt mr-2"></i>Location & Price
+                            </h4>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label for="{{ form.location.id_for_label }}">
+                                            <i class="fas fa-map-marker-alt mr-2"></i>Location
+                                        </label>
+                                        {{ form.location|addclass:"form-control" }}
+                                        {% if form.location.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.location.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="{{ form.price.id_for_label }}">
+                                            <i class="fas fa-dollar-sign mr-2"></i>Price
+                                        </label>
+                                        {{ form.price|addclass:"form-control" }}
+                                        {% if form.price.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.price.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description and Images -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">
+                                <i class="fas fa-images mr-2"></i>Description & Images
+                            </h4>
+                            <div class="form-group">
+                                <label for="{{ form.description.id_for_label }}">
+                                    <i class="fas fa-align-left mr-2"></i>Description
+                                </label>
+                                {{ form.description|addclass:"form-control" }}
+                                {% if form.description.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.description.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group mb-0">
+                                <label for="{{ form.images.id_for_label }}">
+                                    <i class="fas fa-camera mr-2"></i>Property Images
+                                </label>
+                                <div class="custom-file">
+                                    {{ form.images|addclass:"custom-file-input" }}
+                                    <label class="custom-file-label" for="{{ form.images.id_for_label }}">
+                                        {% if form.instance.images %}
+                                            Current: {{ form.instance.images.name }}
+                                        {% else %}
+                                            Choose file
+                                        {% endif %}
+                                    </label>
+                                </div>
+                                {% if form.instance.images %}
+                                    <div class="mt-3">
+                                        <img src="{{ form.instance.images.url }}" alt="Property Image" class="img-thumbnail" style="max-width: 200px;">
+                                    </div>
+                                {% endif %}
+                                {% if form.images.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.images.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="form-group mb-0">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">
+                            {% if form.instance.pk %}
+                                <i class="fas fa-save mr-2"></i>Update Property
+                            {% else %}
+                                <i class="fas fa-plus-circle mr-2"></i>Create Property
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .property-form .card {
+        border: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .property-form .card-title {
+        color: #2c3e50;
+        font-size: 1.25rem;
+    }
+
+    .property-form label {
+        font-weight: 500;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+    }
+
+    .property-form .form-control {
+        border: 1px solid #e9ecef;
+        border-radius: 5px;
+        padding: 0.75rem;
+    }
+
+    .property-form .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.1);
+    }
+
+    .property-form textarea.form-control {
+        min-height: 120px;
+    }
+
+    .custom-file-label {
+        padding: 0.75rem;
+        height: auto;
+    }
+
+    .custom-file-label::after {
+        height: 100%;
+        padding: 0.75rem;
+        background: var(--secondary-gradient);
+        color: white;
+        border: none;
+    }
+
+    .invalid-feedback {
+        font-size: 0.875rem;
+        color: #dc3545;
+        margin-top: 0.25rem;
+    }
+</style>
+
+<script>
+    // Update file input label with selected filename
+    document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+        var fileName = e.target.files[0].name;
+        var label = e.target.nextElementSibling;
+        label.innerHTML = fileName;
+    });
+</script>
+{% endblock content %}

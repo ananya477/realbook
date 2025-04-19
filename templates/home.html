@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="jumbotron text-white" style="background: var(--primary-gradient);">
+        <div class="container">
+            <h1 class="display-4">Welcome to 5 Square Feets</h1>
+            <p class="lead">Find your perfect property with us</p>
+            <hr class="my-4">
+            <p>Browse through our collection of premium properties or list your own.</p>
+            <a class="btn btn-light btn-lg" href="{% url 'property-create' %}" role="button">List Property</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            {% if properties %}
+                {% for property in properties %}
+                    <div class="col-md-6 mb-4">
+                        <div class="property-card card h-100">
+                            {% if property.images %}
+                                <img class="property-img card-img-top" src="{{ property.images.url }}" alt="{{ property.title }}">
+                            {% else %}
+                                <img class="property-img card-img-top" src="{% static 'default_property.jpg' %}" alt="Default Property Image">
+                            {% endif %}
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h5 class="card-title mb-0">{{ property.title }}</h5>
+                                    <span class="property-price">${{ property.price }}</span>
+                                </div>
+                                <p class="property-location mb-2">
+                                    <i class="fas fa-map-marker-alt"></i> {{ property.location }}
+                                </p>
+                                <p class="card-text">{{ property.description|truncatechars:150 }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <span class="badge" style="background: var(--secondary-gradient)">{{ property.property_type }}</span>
+                                        <span class="badge" style="background: var(--accent-gradient)">{{ property.status }}</span>
+                                    </div>
+                                    <small class="text-muted">Posted by {{ property.author }} on {{ property.date_posted|date:"F d, Y" }}</small>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white border-top-0">
+                                <a href="{% url 'property-detail' property.id %}" class="btn btn-outline-info w-100">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-info" role="alert">
+                        No properties available at the moment. Be the first to <a href="{% url 'property-create' %}" class="alert-link">list a property</a>!
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %} 

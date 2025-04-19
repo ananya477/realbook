@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                {% if property.images %}
+                    <img src="{{ property.images.url }}" class="card-img-top" alt="{{ property.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h2 class="card-title">{{ property.title }}</h2>
+                    <p class="card-text">{{ property.description }}</p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            Posted by {{ property.owner }} on {{ property.created_at|date:"F d, Y" }}
+                        </small>
+                    </p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Price: ${{ property.price }}</li>
+                        <li class="list-group-item">Location: {{ property.location }}</li>
+                        <li class="list-group-item">Type: {{ property.get_property_type_display }}</li>
+                        <li class="list-group-item">Status: {{ property.get_status_display }}</li>
+                        {% if bookings %}
+                            <li class="list-group-item bg-warning text-dark">
+                                <h6>Booked Dates:</h6>
+                                {% for booking in bookings %}
+                                    <p>{{ booking.check_in|date:"M d, Y" }} - {{ booking.check_out|date:"M d, Y" }}</p>
+                                {% endfor %}
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+
+            {% if user.is_authenticated %}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5>Book this property</h5>
+                        <a href="{% url 'create-booking' property.pk %}" class="btn btn-primary">Book Now</a>
+                        {% if is_wishlisted %}
+                            <a href="{% url 'remove-from-wishlist' property.pk %}" class="btn btn-outline-danger">
+                                Remove from Wishlist
+                            </a>
+                        {% else %}
+                            <a href="{% url 'add-to-wishlist' property.pk %}" class="btn btn-outline-primary">
+                                Add to Wishlist
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Reviews Section -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5>Reviews</h5>
+                    {% for review in reviews %}
+                        <div class="mb-3">
+                            <strong>{{ review.user.username }}</strong>
+                            <p>Rating: {{ review.rating }}/5</p>
+                            <p>{{ review.comment }}</p>
+                            <small class="text-muted">{{ review.review_date|date:"F d, Y" }}</small>
+                            <hr>
+                        </div>
+                    {% empty %}
+                        <p>No reviews yet.</p>
+                    {% endfor %}
+
+                    {% if user.is_authenticated %}
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{ review_form|crispy }}
+                            <button type="submit" class="btn btn-primary">Submit Review</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

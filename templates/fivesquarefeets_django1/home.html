@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block body_class %}home-bg{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <h1>Welcome to Five Square Feets</h1>
+    <p>Find your perfect property here!</p>
+    <p>Browse through our collection of properties or list your own.</p>
+    <a href="{% url 'property-create' %}" class="btn btn-primary btn-lg">List Property</a>
+</div>
+
+<div class="properties-section">
+    <div class="row">
+        {% for property in properties %}
+            <div class="col-md-4 mb-4">
+                <div class="card property-card h-100">
+                    {% if property.images %}
+                        <img src="{{ property.images.url }}" class="card-img-top" alt="{{ property.title }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ property.title }}</h5>
+                        <p class="card-text">{{ property.description|truncatewords:20 }}</p>
+                        <p class="property-price">${{ property.price }}</p>
+                        <p class="card-text"><small class="text-muted">Location: {{ property.location }}</small></p>
+                        <a href="{% url 'property-detail' property.pk %}" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center">
+                <p>No properties listed yet.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

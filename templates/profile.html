@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% load static %}
+{% load form_tags %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="content-section">
+                <div class="text-center mb-4">
+                    <div class="profile-header" style="background: var(--primary-gradient); padding: 2rem; border-radius: 10px; margin: -20px -30px 20px;">
+                        <div class="profile-img-wrapper mb-3">
+                            <img class="account-img" src="{{ user.profile.image.url }}" alt="{{ user.username }}'s profile picture">
+                        </div>
+                        <h2 class="account-heading text-white mb-2">{{ user.username }}</h2>
+                        <p class="text-light mb-0">{{ user.email }}</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <form method="POST" enctype="multipart/form-data" class="profile-form">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ u_form.username.id_for_label }}">
+                                            <i class="fas fa-user mr-2"></i>Username
+                                        </label>
+                                        {{ u_form.username|addclass:"form-control" }}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="{{ u_form.email.id_for_label }}">
+                                            <i class="fas fa-envelope mr-2"></i>Email
+                                        </label>
+                                        {{ u_form.email|addclass:"form-control" }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="{{ p_form.image.id_for_label }}">
+                                            <i class="fas fa-image mr-2"></i>Profile Picture
+                                        </label>
+                                        <div class="custom-file">
+                                            {{ p_form.image|addclass:"custom-file-input" }}
+                                            <label class="custom-file-label" for="{{ p_form.image.id_for_label }}">Choose file</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mt-4">
+                                <button type="submit" class="btn btn-outline-info btn-block">
+                                    <i class="fas fa-save mr-2"></i>Update Profile
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- User's Properties Section -->
+                <div class="mt-5">
+                    <h3 class="mb-4">
+                        <i class="fas fa-building mr-2"></i>My Properties
+                    </h3>
+                    <div class="row">
+                        {% for property in user.property_set.all %}
+                            <div class="col-md-6 mb-4">
+                                <div class="property-card card h-100">
+                                    {% if property.images %}
+                                        <img class="property-img card-img-top" src="{{ property.images.url }}" alt="{{ property.title }}">
+                                    {% else %}
+                                        <img class="property-img card-img-top" src="{% static 'default_property.jpg' %}" alt="Default Property Image">
+                                    {% endif %}
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ property.title }}</h5>
+                                        <p class="property-location">
+                                            <i class="fas fa-map-marker-alt mr-2"></i>{{ property.location }}
+                                        </p>
+                                        <p class="property-price">${{ property.price }}</p>
+                                        <div class="property-status mb-3">
+                                            <span class="badge" style="background: var(--secondary-gradient)">{{ property.property_type }}</span>
+                                            <span class="badge" style="background: var(--accent-gradient)">{{ property.status }}</span>
+                                        </div>
+                                        <div class="btn-group w-100">
+                                            <a href="{% url 'property-detail' property.id %}" class="btn btn-outline-info">
+                                                <i class="fas fa-eye mr-1"></i>View
+                                            </a>
+                                            <a href="{% url 'property-update' property.id %}" class="btn btn-outline-success">
+                                                <i class="fas fa-edit mr-1"></i>Edit
+                                            </a>
+                                            <a href="{% url 'property-delete' property.id %}" class="btn btn-outline-danger">
+                                                <i class="fas fa-trash-alt mr-1"></i>Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <div class="col-12">
+                                <div class="alert alert-info" role="alert">
+                                    <i class="fas fa-info-circle mr-2"></i>You haven't listed any properties yet.
+                                    <a href="{% url 'property-create' %}" class="alert-link">Create your first listing!</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .profile-img-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .account-img {
+        border: 4px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .profile-form label {
+        font-weight: 500;
+        color: #2c3e50;
+    }
+    
+    .custom-file-label::after {
+        background: var(--secondary-gradient);
+        color: white;
+        border: none;
+    }
+    
+    .btn-group .btn {
+        flex: 1;
+        padding: 0.375rem;
+    }
+</style>
+
+<script>
+    // Update file input label with selected filename
+    document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+        var fileName = e.target.files[0].name;
+        var label = e.target.nextElementSibling;
+        label.innerHTML = fileName;
+    });
+</script>
+{% endblock content %} 
